@@ -1,0 +1,8 @@
+
+public class EventTime {
+
+	public EventTime() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

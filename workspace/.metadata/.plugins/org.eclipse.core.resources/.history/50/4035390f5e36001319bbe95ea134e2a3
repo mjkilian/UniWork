@@ -1,0 +1,27 @@
+
+public class ShortTermAnalysis {
+	
+	public int[] shortTermEnergy(Sampling s){
+		int[] energy = new int[s.getSampling().length];
+		for(int i = 0; i < energy.length; i++){
+			energy[i] = (int) Math.pow(s.getSampling()[i],2);
+		}
+		return energy;
+	}
+	
+	public int[] shortTermMagnitude(Sampling s){
+		int[] magnitude = new int[s.getSampling().length];
+		for(int i = 0; i < magnitude.length; i++){
+			magnitude[i] = (int) Math.abs(s.getSampling()[i]);
+		}
+		return magnitude;
+	}
+	
+	public int[] shortTermAverageZCR(Sampling s){
+		int[] zcr = new int[s.getSampling().length];
+		for(int i = 1; i < zcr.length; i++){
+			zcr[i] = (int) Math.abs(Math.signum(s.getSampling()[i]) - Math.signum(s.getSampling()[i-1]));
+		}
+		return zcr;
+	}
+}

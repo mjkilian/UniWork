@@ -1,0 +1,5 @@
+package Calendar.Category;
+
+public class CategoryException extends Exception {
+
+}

@@ -1,0 +1,144 @@
+Pb[81 vars, 0 multiple vars, 50 cons]
+==== VARIABLES ====
+board_0_0 [1, 9]
+board_0_1 [1, 9]
+board_0_2 [1, 9]
+board_0_3 [1, 9]
+board_0_4 [1, 9]
+board_0_5 [1, 9]
+board_0_6 [1, 9]
+board_0_7 [1, 9]
+board_0_8 [1, 9]
+board_1_0 [1, 9]
+board_1_1 [1, 9]
+board_1_2 [1, 9]
+board_1_3 [1, 9]
+board_1_4 [1, 9]
+board_1_5 [1, 9]
+board_1_6 [1, 9]
+board_1_7 [1, 9]
+board_1_8 [1, 9]
+board_2_0 [1, 9]
+board_2_1 [1, 9]
+board_2_2 [1, 9]
+board_2_3 [1, 9]
+board_2_4 [1, 9]
+board_2_5 [1, 9]
+board_2_6 [1, 9]
+board_2_7 [1, 9]
+board_2_8 [1, 9]
+board_3_0 [1, 9]
+board_3_1 [1, 9]
+board_3_2 [1, 9]
+board_3_3 [1, 9]
+board_3_4 [1, 9]
+board_3_5 [1, 9]
+board_3_6 [1, 9]
+board_3_7 [1, 9]
+board_3_8 [1, 9]
+board_4_0 [1, 9]
+board_4_1 [1, 9]
+board_4_2 [1, 9]
+board_4_3 [1, 9]
+board_4_4 [1, 9]
+board_4_5 [1, 9]
+board_4_6 [1, 9]
+board_4_7 [1, 9]
+board_4_8 [1, 9]
+board_5_0 [1, 9]
+board_5_1 [1, 9]
+board_5_2 [1, 9]
+board_5_3 [1, 9]
+board_5_4 [1, 9]
+board_5_5 [1, 9]
+board_5_6 [1, 9]
+board_5_7 [1, 9]
+board_5_8 [1, 9]
+board_6_0 [1, 9]
+board_6_1 [1, 9]
+board_6_2 [1, 9]
+board_6_3 [1, 9]
+board_6_4 [1, 9]
+board_6_5 [1, 9]
+board_6_6 [1, 9]
+board_6_7 [1, 9]
+board_6_8 [1, 9]
+board_7_0 [1, 9]
+board_7_1 [1, 9]
+board_7_2 [1, 9]
+board_7_3 [1, 9]
+board_7_4 [1, 9]
+board_7_5 [1, 9]
+board_7_6 [1, 9]
+board_7_7 [1, 9]
+board_7_8 [1, 9]
+board_8_0 [1, 9]
+board_8_1 [1, 9]
+board_8_2 [1, 9]
+board_8_3 [1, 9]
+board_8_4 [1, 9]
+board_8_5 [1, 9]
+board_8_6 [1, 9]
+board_8_7 [1, 9]
+board_8_8 [1, 9]
+cst [6]
+cst [3]
+cst [1]
+cst [9]
+cst [7]
+cst [5]
+cst [2]
+cst [4]
+cst [8]
+==== MULTIPLE VARIABLES ====
+==== CONSTRAINTS ====
+Constraint allDifferent ( { board_0_3 [1, 9], board_1_3 [1, 9], board_2_3 [1, 9], board_3_3 [1, 9], board_4_3 [1, 9], board_5_3 [1, 9], board_6_3 [1, 9], board_7_3 [1, 9], board_8_3 [1, 9] } )
+Constraint eq ( { board_0_8 [1, 9], cst [1] } )
+Constraint eq ( { board_6_2 [1, 9], cst [8] } )
+Constraint allDifferent ( { board_8_0 [1, 9], board_8_1 [1, 9], board_8_2 [1, 9], board_8_3 [1, 9], board_8_4 [1, 9], board_8_5 [1, 9], board_8_6 [1, 9], board_8_7 [1, 9], board_8_8 [1, 9] } )
+Constraint allDifferent ( { board_0_3 [1, 9], board_0_4 [1, 9], board_0_5 [1, 9], board_1_3 [1, 9], board_1_4 [1, 9], board_1_5 [1, 9], board_2_3 [1, 9], board_2_4 [1, 9], board_2_5 [1, 9] } )
+Constraint allDifferent ( { board_1_0 [1, 9], board_1_1 [1, 9], board_1_2 [1, 9], board_1_3 [1, 9], board_1_4 [1, 9], board_1_5 [1, 9], board_1_6 [1, 9], board_1_7 [1, 9], board_1_8 [1, 9] } )
+Constraint eq ( { board_8_6 [1, 9], cst [3] } )
+Constraint allDifferent ( { board_6_3 [1, 9], board_6_4 [1, 9], board_6_5 [1, 9], board_7_3 [1, 9], board_7_4 [1, 9], board_7_5 [1, 9], board_8_3 [1, 9], board_8_4 [1, 9], board_8_5 [1, 9] } )
+Constraint eq ( { board_4_0 [1, 9], cst [3] } )
+Constraint allDifferent ( { board_0_2 [1, 9], board_1_2 [1, 9], board_2_2 [1, 9], board_3_2 [1, 9], board_4_2 [1, 9], board_5_2 [1, 9], board_6_2 [1, 9], board_7_2 [1, 9], board_8_2 [1, 9] } )
+Constraint allDifferent ( { board_6_0 [1, 9], board_6_1 [1, 9], board_6_2 [1, 9], board_6_3 [1, 9], board_6_4 [1, 9], board_6_5 [1, 9], board_6_6 [1, 9], board_6_7 [1, 9], board_6_8 [1, 9] } )
+Constraint allDifferent ( { board_0_8 [1, 9], board_1_8 [1, 9], board_2_8 [1, 9], board_3_8 [1, 9], board_4_8 [1, 9], board_5_8 [1, 9], board_6_8 [1, 9], board_7_8 [1, 9], board_8_8 [1, 9] } )
+Constraint eq ( { board_2_1 [1, 9], cst [7] } )
+Constraint eq ( { board_8_5 [1, 9], cst [6] } )
+Constraint allDifferent ( { board_3_0 [1, 9], board_3_1 [1, 9], board_3_2 [1, 9], board_4_0 [1, 9], board_4_1 [1, 9], board_4_2 [1, 9], board_5_0 [1, 9], board_5_1 [1, 9], board_5_2 [1, 9] } )
+Constraint eq ( { board_3_5 [1, 9], cst [1] } )
+Constraint allDifferent ( { board_0_1 [1, 9], board_1_1 [1, 9], board_2_1 [1, 9], board_3_1 [1, 9], board_4_1 [1, 9], board_5_1 [1, 9], board_6_1 [1, 9], board_7_1 [1, 9], board_8_1 [1, 9] } )
+Constraint eq ( { board_0_3 [1, 9], cst [3] } )
+Constraint eq ( { board_6_1 [1, 9], cst [4] } )
+Constraint allDifferent ( { board_4_0 [1, 9], board_4_1 [1, 9], board_4_2 [1, 9], board_4_3 [1, 9], board_4_4 [1, 9], board_4_5 [1, 9], board_4_6 [1, 9], board_4_7 [1, 9], board_4_8 [1, 9] } )
+Constraint allDifferent ( { board_0_7 [1, 9], board_1_7 [1, 9], board_2_7 [1, 9], board_3_7 [1, 9], board_4_7 [1, 9], board_5_7 [1, 9], board_6_7 [1, 9], board_7_7 [1, 9], board_8_7 [1, 9] } )
+Constraint eq ( { board_1_6 [1, 9], cst [6] } )
+Constraint eq ( { board_8_2 [1, 9], cst [1] } )
+Constraint allDifferent ( { board_3_6 [1, 9], board_3_7 [1, 9], board_3_8 [1, 9], board_4_6 [1, 9], board_4_7 [1, 9], board_4_8 [1, 9], board_5_6 [1, 9], board_5_7 [1, 9], board_5_8 [1, 9] } )
+Constraint allDifferent ( { board_0_0 [1, 9], board_1_0 [1, 9], board_2_0 [1, 9], board_3_0 [1, 9], board_4_0 [1, 9], board_5_0 [1, 9], board_6_0 [1, 9], board_7_0 [1, 9], board_8_0 [1, 9] } )
+Constraint allDifferent ( { board_2_0 [1, 9], board_2_1 [1, 9], board_2_2 [1, 9], board_2_3 [1, 9], board_2_4 [1, 9], board_2_5 [1, 9], board_2_6 [1, 9], board_2_7 [1, 9], board_2_8 [1, 9] } )
+Constraint eq ( { board_5_3 [1, 9], cst [5] } )
+Constraint allDifferent ( { board_0_6 [1, 9], board_1_6 [1, 9], board_2_6 [1, 9], board_3_6 [1, 9], board_4_6 [1, 9], board_5_6 [1, 9], board_6_6 [1, 9], board_7_6 [1, 9], board_8_6 [1, 9] } )
+Constraint eq ( { board_7_1 [1, 9], cst [6] } )
+Constraint allDifferent ( { board_3_3 [1, 9], board_3_4 [1, 9], board_3_5 [1, 9], board_4_3 [1, 9], board_4_4 [1, 9], board_4_5 [1, 9], board_5_3 [1, 9], board_5_4 [1, 9], board_5_5 [1, 9] } )
+Constraint eq ( { board_3_3 [1, 9], cst [2] } )
+Constraint allDifferent ( { board_7_0 [1, 9], board_7_1 [1, 9], board_7_2 [1, 9], board_7_3 [1, 9], board_7_4 [1, 9], board_7_5 [1, 9], board_7_6 [1, 9], board_7_7 [1, 9], board_7_8 [1, 9] } )
+Constraint allDifferent ( { board_0_0 [1, 9], board_0_1 [1, 9], board_0_2 [1, 9], board_0_3 [1, 9], board_0_4 [1, 9], board_0_5 [1, 9], board_0_6 [1, 9], board_0_7 [1, 9], board_0_8 [1, 9] } )
+Constraint eq ( { board_0_2 [1, 9], cst [6] } )
+Constraint eq ( { board_4_7 [1, 9], cst [2] } )
+Constraint allDifferent ( { board_0_5 [1, 9], board_1_5 [1, 9], board_2_5 [1, 9], board_3_5 [1, 9], board_4_5 [1, 9], board_5_5 [1, 9], board_6_5 [1, 9], board_7_5 [1, 9], board_8_5 [1, 9] } )
+Constraint eq ( { board_1_0 [1, 9], cst [9] } )
+Constraint eq ( { board_6_7 [1, 9], cst [1] } )
+Constraint allDifferent ( { board_0_0 [1, 9], board_0_1 [1, 9], board_0_2 [1, 9], board_1_0 [1, 9], board_1_1 [1, 9], board_1_2 [1, 9], board_2_0 [1, 9], board_2_1 [1, 9], board_2_2 [1, 9] } )
+Constraint eq ( { board_8_8 [1, 9], cst [8] } )
+Constraint allDifferent ( { board_5_0 [1, 9], board_5_1 [1, 9], board_5_2 [1, 9], board_5_3 [1, 9], board_5_4 [1, 9], board_5_5 [1, 9], board_5_6 [1, 9], board_5_7 [1, 9], board_5_8 [1, 9] } )
+Constraint allDifferent ( { board_6_0 [1, 9], board_6_1 [1, 9], board_6_2 [1, 9], board_7_0 [1, 9], board_7_1 [1, 9], board_7_2 [1, 9], board_8_0 [1, 9], board_8_1 [1, 9], board_8_2 [1, 9] } )
+Constraint eq ( { board_4_4 [1, 9], cst [9] } )
+Constraint allDifferent ( { board_0_4 [1, 9], board_1_4 [1, 9], board_2_4 [1, 9], board_3_4 [1, 9], board_4_4 [1, 9], board_5_4 [1, 9], board_6_4 [1, 9], board_7_4 [1, 9], board_8_4 [1, 9] } )
+Constraint allDifferent ( { board_0_6 [1, 9], board_0_7 [1, 9], board_0_8 [1, 9], board_1_6 [1, 9], board_1_7 [1, 9], board_1_8 [1, 9], board_2_6 [1, 9], board_2_7 [1, 9], board_2_8 [1, 9] } )
+Constraint eq ( { board_2_7 [1, 9], cst [5] } )
+Constraint allDifferent ( { board_3_0 [1, 9], board_3_1 [1, 9], board_3_2 [1, 9], board_3_3 [1, 9], board_3_4 [1, 9], board_3_5 [1, 9], board_3_6 [1, 9], board_3_7 [1, 9], board_3_8 [1, 9] } )
+Constraint eq ( { board_8_7 [1, 9], cst [7] } )
+Constraint allDifferent ( { board_6_6 [1, 9], board_6_7 [1, 9], board_6_8 [1, 9], board_7_6 [1, 9], board_7_7 [1, 9], board_7_8 [1, 9], board_8_6 [1, 9], board_8_7 [1, 9], board_8_8 [1, 9] } )
+Constraint eq ( { board_4_1 [1, 9], cst [5] } )

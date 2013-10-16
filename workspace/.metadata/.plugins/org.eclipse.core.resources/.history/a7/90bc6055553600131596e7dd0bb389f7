@@ -1,0 +1,44 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+
+public class Sampling {
+	private int[] sampling;
+	private float samplingRate;
+	
+	public Sampling(File f){
+		
+		//instantiate file reader
+		Scanner reader = null;
+		try {
+			reader = new Scanner(f);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		//take in samples
+		List<Integer> sampleQueue = new ArrayList<Integer>(1000);
+		while(reader.hasNextLine()){
+			sampleQueue.add(Integer.parseInt(reader.nextLine()));
+		}
+		
+		this.sampling = new int[sampleQueue.size()];
+		for(int i = 0; i < sampleQueue.size(); i++){
+			sampling[i] = sampleQueue.remove(0);
+		}
+		
+		System.out.println(Arrays.toString(sampling));
+	}
+	
+	public static void main(String args[]){
+		Sampling sampling = new Sampling(new File("data/laboratory.dat"));
+	}
+}

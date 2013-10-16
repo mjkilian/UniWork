@@ -1,0 +1,29 @@
+package Calendar.Month;
+import Calendar.Day.*;
+
+public class Month {
+	/* Prototype so month lengths will be set manually*/
+	static final  String monthName[] =  {"January","February","March","April","May","June","July","August","September","October","November","December"};
+	static final int  monthLength[] = {31,28,31,30,31,30,31,31,30,31,30,31};
+	
+	private int monthNumber;
+	private String monthname;
+	private int length;
+	private Day day[];
+	
+	Month(int number, boolean isLeap){
+		monthNumber = number;
+		if(number == 2 && isLeap){
+			monthname = monthName[number];
+			length = 29;
+		}else
+	}
+	
+	public Day[] getDay() {
+		return day;
+	}
+
+	
+	
+	
+}

@@ -1,0 +1,35 @@
+package Calendar.Day;
+import java.util.ArrayList;
+import Calendar.Event.*;
+import Calendar.Category.*;
+
+public class Day {
+	private ArrayList<Event> events;
+
+
+	public Day(){
+		events = new ArrayList<Event>();
+	}
+
+
+	public boolean addEvent(String title, EventTime stime,EventTime etime, Category category){
+		//Currently implements quick add
+		//will have to be expanded to encompass full add
+		if (!(category == null)){
+			return events.add(new Event(title, stime,etime, category));
+		}else{
+			return events.add(new Event(title,stime,etime));
+		}
+	}
+
+	public void removeEvent(Event e){
+		events.remove(e);
+	}
+
+
+
+
+
+
+
+}

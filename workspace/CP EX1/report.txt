@@ -1,0 +1,21 @@
+Sudoku Report
+
+On comparing the two models, the following runtimes for each problem is as follows, where a node is the JChoco representation of a node (decision):
+
+Problem			AllDiff Time(ms) 	Nodes		Neq Time(ms)	Nodes
+times20070107		98			2		27		15	
+times20071015		95			2		18		6	
+times20071014		103			2		16		4
+herald20061222E		94			1		14		1
+herald20061222H		95			1		33		22
+
+Clearly there is a difference in runtime, with the Neq approach solving the problem much faster but using more nodes. It would appear that at some point in the 
+neq approach search is needed, though this is clearly very efficient. By comparison the AllDiff approach solves the problem entirely or almost entriely using propogation,
+but this is at a cost of runtime. 
+
+In theory, since the AllDiff constraint can be decomposed into binary constraints, the two approaches could establish the same level of consistency in propogation. It is possible however, 
+depending on the consistency algorithm used, that this is not acutally the case: the results suggest that a greater degree of consistency is established for AllDiff than for Neq.
+
+A problem instance is diffcult if at some point the random selection of values for cell(s) is necessary to progress. Crook formalises the condition under which this occurs in his paper [1, pg 5].
+This means there must be some degree of searching in order to complete the problem, and it cannot be solved entirely by propogation.
+

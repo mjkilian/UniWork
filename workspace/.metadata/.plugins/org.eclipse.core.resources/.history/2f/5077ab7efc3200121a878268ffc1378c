@@ -1,0 +1,44 @@
+package Calendar;
+import java.awt.Color;
+
+import Calendar.Year.*;
+import Calendar.Category.*;
+import Calendar.Day.*;
+import Calendar.Event.*;
+
+public class Calendar { //prototype
+	private static final int NO_OF_CATEGORIES = 10;
+	private Calendar cal = null;
+
+	private Year years[] = {new Year(2012), new Year (2013)}; //for prototype
+	private CategorySet categories = new CategorySet(NO_OF_CATEGORIES);
+
+	private Calendar(){
+		super();
+	}
+
+
+	public Calendar returnCalendar(){ //singleton 
+		if(cal == null){
+			cal = new Calendar();
+		}
+		return cal;
+	}
+
+	public boolean quickAdd(String name, CalendarDate date, EventTime start, EventTime end, Category category){
+		Day targetDay = years[date.getYear()].getMonth(date.getMonth()).getDay(date.getDay());
+		return targetDay.addEvent(name,start,end,category);
+	}
+	
+	public Event removeEvent(CalendarDate date,int id){
+		Day targetday = years[date.getYear()].getMonth(date.getMonth()).getDay(date.getDay());
+		return targetday.removeEvent(id);
+	}
+	
+	public boolean addCategory(String name, Color color){
+		return categories.add(new Category(name,color));
+	}
+	
+	
+	
+}

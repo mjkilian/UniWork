@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Helloworld
+Bundle-SymbolicName: uk.ac.gla.userid.helloworld; singleton:=true
+Bundle-Version: 1.0.0.test
+Bundle-Activator: uk.ac.gla.userid.helloworld.Activator
+Bundle-Vendor: Michael Kilian & Craig Martin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.jface.text,
+ org.eclipse.ui.editors
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy

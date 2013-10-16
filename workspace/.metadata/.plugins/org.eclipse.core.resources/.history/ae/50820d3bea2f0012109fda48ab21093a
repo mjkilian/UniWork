@@ -1,0 +1,33 @@
+package Calendar.Day;
+import java.util.ArrayList;
+import Calendar.Event.*;
+import Calendar.Category.*;
+
+public class Day {
+	private ArrayList<Event> events;
+
+
+	public Day(){
+		events = new ArrayList<Event>();
+	}
+
+
+	public void addEvent(String title, EventTime time, Category category){
+		if (!(category == null)){
+			events.add(new Event(title, time, category));
+		}else{
+			events.add(new Event(title,time));
+		}
+	}
+
+	public void removeEvent(Event e){
+		events.remove(e);
+	}
+
+
+
+
+
+
+
+}

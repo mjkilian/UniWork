@@ -1,0 +1,68 @@
+package Calendar.Day;
+import java.util.ArrayList;
+import Calendar.Event.*;
+
+
+public class Day {
+
+	private int day;
+	private int month;
+	private int year;
+	private ArrayList<Event> events;
+	
+	public Day(int d, int m, int y){
+		day = d;
+		month = m;
+		year = y;
+		new ArrayList<Event>();
+	}
+	
+	public Day(){
+		day = 1; 
+		month = 1;
+		year = 2012;
+		new ArrayList<Event>();
+	}
+	
+	
+	public void addEvent(String title, EventTime time, Category category){
+		if (!category == null){
+			events.add(new Event(title, time, category));
+		}else{
+			events.add(new Event(title,time));
+	}
+	}
+	
+	public void removeEvent(Event e){
+		events.remove(e);
+	}
+
+	//Getters & Setters
+	
+	public int getDay() {
+		return day;
+	}
+
+	public void setDay(int day) {
+		this.day = day;
+	}
+
+	public int getMonth() {
+		return month;
+	}
+
+	public void setMonth(int month) {
+		this.month = month;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+	
+	
+	
+}
