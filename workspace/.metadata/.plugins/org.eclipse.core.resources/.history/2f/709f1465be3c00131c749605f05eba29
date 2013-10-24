@@ -1,0 +1,50 @@
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+
+
+public class Mapper1 extends Mapper<LongWritable,Text,LongWritable,Text>{
+	private Date earliest_timestamp = null;
+	private Date latest_timestamp = null;
+	private DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+	
+	
+	public void setup(Context context){
+		String earliest = context.getConfiguration().get("earliest_timestamp");
+		String latest = context.getConfiguration().get("laes_timestamp");
+		try {
+			earliest_timestamp = df.parse(earliest);
+			latest_timestamp = df.parse(latest);
+		} catch (ParseException e) {
+			System.err.println("Argument dates not parsed!");
+			e.printStackTrace();
+		}
+		
+	}
+	@Override
+	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException{
+		/*Split out timestamp*/
+		String line = value.toString();
+		String[] items = line.split(" ");
+		String timeString = items[4];
+		
+		/*Parse timestamp to date*/
+		Date date = null;
+		try {
+			date = df.parse(timeString);
+		} catch (ParseException e) {
+			System.err.println("Timestamp cannot be parsed!");
+			e.printStackTrace();
+		}
+		
+		/*check timestamp is within allowed period*/
+		if(date.compareTo(earliest_timestamp) >= 0 && date.compareTo(latest_timestamp) <= 0)
+			context.write(key,value);
+	}
+}
