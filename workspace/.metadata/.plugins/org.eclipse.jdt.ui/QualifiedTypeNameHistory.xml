@@ -28,4 +28,5 @@
 <fullyQualifiedTypeName name="java.io.FileInputStream"/>
 <fullyQualifiedTypeName name="java.util.Arrays"/>
 <fullyQualifiedTypeName name="java.lang.Math"/>
+<fullyQualifiedTypeName name="choco.kernel.model.variables.integer.IntegerExpressionVariable"/>
 </qualifiedTypeNameHistroy>
