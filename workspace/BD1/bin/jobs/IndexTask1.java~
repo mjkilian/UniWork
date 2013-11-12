@@ -1,0 +1,80 @@
+package jobs;
+
+
+import io.inputformats.IndexInput1;
+import io.outputformats.Output1;
+import mappers.IndexMapper1;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.util.Tool;
+import org.apache.hadoop.util.ToolRunner;
+
+
+
+
+public class IndexTask1 extends Configured implements Tool {
+	public void usage(){
+		System.err.println("IndexTask1 ISO-8601_Timestamp_Earliest ISO-8061_Timestamp_Latest");
+	}
+
+
+	@Override
+	public int run(String[] args) throws Exception {
+		/*Set configuration*/
+		Configuration conf = new Configuration();
+		// Set conf variables pointing to the BD4 cluster 
+		conf.set("fs.defaultFS", "hdfs://bigdata-06.dcs.gla.ac.uk:8020");
+		conf.set("mapred.job.tracker", "bigdata-06.dcs.gla.ac.uk:8021");
+		conf.set("mapred.jar", "file:///users/level4/1003819k/DatData/DatData/IndexedQueries/IndexTask1.jar");
+		
+		FileSystem fs = FileSystem.get(conf);
+		fs.delete(new Path("/user/1003819k/index_output_folder/"), true);
+		
+		/*initialise Job*/
+		Job job= new Job(conf);
+		job.setJobName("IndexTask 1");
+		job.setJarByClass(IndexTask1.class);
+
+		/*Read in timestamp arguments*/
+		if(args.length < 2){
+			usage();
+			return 1;	
+		}else{
+			job.getConfiguration().set("earliest_timestamp", args[0]);
+			job.getConfiguration().set("latest_timestamp", args[1]);
+		}
+
+		/*Set Input and Output*/
+		job.setInputFormatClass(IndexInput1.class);
+		job.setOutputFormatClass(Output1.class);
+		job.getConfiguration().set("mapreduce.input.basename","index.txt");
+
+		/*Set classes for mappers/ this task does not require reducers*/
+		job.setMapperClass(IndexMapper1.class);
+
+		/*Set output key values */
+		job.setOutputKeyClass(LongWritable.class);
+		job.setOutputValueClass(Text.class);
+		
+		FileInputFormat.addInputPath(job, new Path("/user/1003819k/index/index.txt-r-00000"));
+		FileOutputFormat.setOutputPath(job, new Path("/user/1003819k/index_output_folder/"));
+		
+
+		/*submit job*/
+		job.submit();
+		return (job.waitForCompletion(true) ? 0 : 1);
+	}
+	
+	public static void main(String[] args) throws Exception {
+		 System.exit(ToolRunner.run(new Configuration(), new IndexTask1(), args));
+	}
+
+}

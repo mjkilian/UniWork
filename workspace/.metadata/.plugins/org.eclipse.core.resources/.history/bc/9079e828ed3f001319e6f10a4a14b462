@@ -1,0 +1,26 @@
+import javax.swing.JPanel;
+
+import org.jfree.data.xy.XYSeries;
+
+
+public class SignalGraph extends JPanel {
+	public SignalGraph(Sampling s){
+		ShortTermAnalysis sta = new ShortTermAnalysis();
+		
+		XYSeries original = buildSeriesAgainstTime("Signal",s,s.getSampling());
+		XYSeries energy = buildSeriesAgainstTime("Enegry",s,sta.shortTermEnergy(s));
+		XYSeries magnitude = buildSeriesAgainstTime("Magnitude",s,sta.shortTermMagnitude(s));
+		XYSeries zeroCrossing =  buildSeriesAgainstTime("Average Zero Crossing Rate",s,sta.shortTermAverageZCR(s));
+		
+		original.
+	}
+	
+	private XYSeries buildSeriesAgainstTime(String name, Sampling s, int values[]){
+		XYSeries plot = new XYSeries(name);
+		for(int i = 0; i < s.getSampling().length; i++){
+			plot.add(i / (s.getSampling().length / s.getSamplingRate()), values[i]);
+		}
+		return plot;
+	}
+}
+

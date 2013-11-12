@@ -1,0 +1,62 @@
+package mappers;
+
+import java.io.IOException;
+import java.util.Collection;
+
+import indexClasses.DateWritable;
+import indexClasses.TimestampTree;
+
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+
+import util.TimestampParser;
+
+public class IndexMapper1 extends Mapper<LongWritable, TimestampTree, LongWritable, Text> {
+	private DateWritable earliest_timestamp;
+	private DateWritable latest_timestamp;
+	
+	
+	
+	@Override
+	protected void setup(Context context) throws IOException,
+			InterruptedException {
+		earliest_timestamp = TimestampParser.parseDateWritable(context.getConfiguration().get("earliest_timestamp"));
+		latest_timestamp = TimestampParser.parseDateWritable(context.getConfiguration().get("latest_timestamp"));
+	}
+
+
+
+	@Override
+	protected void map(LongWritable key, TimestampTree value,
+			Context context)
+			throws IOException, InterruptedException {
+		//no need to sort revision ids. they are already in time order, and we can assume that revision ids are given such that if revision 1
+		//is made before revision 2 then revID_1 < revID_2
+		Collection<LongWritable> revisionsWithinRange = value.subMap(earliest_timestamp, latest_timestamp).values();
+
+		String output = "";
+		for(LongWritable rev : revisionsWithinRange){
+			output += rev.toString() + " ";
+		}
+		context.write(key,new Text( output));
+		
+	}
+
+
+
+	public DateWritable getEarliest_timestamp() {
+		return earliest_timestamp;
+	}
+
+
+
+	public DateWritable getLatest_timestamp() {
+		return latest_timestamp;
+	}
+	
+	
+	
+	
+
+}

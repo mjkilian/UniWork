@@ -20,5 +20,10 @@
 			<type>2</type>
 			<location>/users/level4/1003819k/DatData/Code</location>
 		</link>
+		<link>
+			<name>IndexedQueries</name>
+			<type>2</type>
+			<location>/users/level4/1003819k/DatData/IndexedQueries</location>
+		</link>
 	</linkedResources>
 </projectDescription>

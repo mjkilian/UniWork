@@ -1,0 +1,51 @@
+package mappers;
+
+import java.io.IOException;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.mapreduce.Mapper;
+
+<<<<<<< HEAD:Code/mappers/Mapper4Part2.java
+import util.TimestampParser;
+/*Mapper used for second job in Task 4*/
+
+
+public class Mapper4Part2 extends Mapper<LongWritable,Text,LongWritable,LongWritable> {
+	/** The earliest_timestamp. */
+	protected Date earliest_timestamp = null;
+	
+	/** The latest_timestamp. */
+	protected Date latest_timestamp = null;
+	
+	
+	public void setup(Context context){
+		/*Parse timestamps*/
+		String earliest = context.getConfiguration().get("earliest_timestamp");
+		String latest = context.getConfiguration().get("latest_timestamp");
+		earliest_timestamp = TimestampParser.parseDate(earliest); 
+		latest_timestamp = TimestampParser.parseDate(latest);
+	}
+	
+	@Override
+	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException{
+		/*Split out timestamp*/
+		String line = value.toString();
+		String[] items = line.split(" ");
+		String timeString = items[1];
+		
+		/*Parse timestamp to date*/
+		Date date = null;
+		date = TimestampParser.parseDate(timeString);
+		
+		if(date.after(earliest_timestamp)&& date.before(latest_timestamp)) //write entry if within time range
+				context.write(new LongWritable(Long.parseLong(items[0])), key); //pass out the revid as key and article id as value
+	}
+	
+=======
+public class Mapper4 extends Mapper<LongWritable,LongWritable,LongWritable,LongWritable> {
+        @Override
+        public void map(LongWritable key, LongWritable value, Context context) throws IOException, InterruptedException{
+                context.write(value,key);
+        }
+        
+>>>>>>> ca2ab49abd5eaded893dcce7e6a184a1e6f4f439:Code/mappers/Mapper4.java
+}

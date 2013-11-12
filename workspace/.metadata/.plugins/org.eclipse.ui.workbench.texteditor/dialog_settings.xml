@@ -13,12 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="getAncestors" key="selection"/>
+		<item value="zcr" key="selection"/>
 		<list key="findhistory">
+			<item value="energy"/>
+			<item value="job1"/>
 			<item value="getAncestors"/>
 			<item value="CalendarTime"/>
 		</list>
 		<list key="replacehistory">
+			<item value="zcr"/>
+			<item value="job"/>
 			<item value="EventTime"/>
 		</list>
 	</section>

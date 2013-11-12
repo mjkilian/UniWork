@@ -1,0 +1,137 @@
+package jobs;
+
+import io.inputformats.Input1;
+import io.inputformats.Input4;
+import io.outputformats.Output4;
+import io.outputformats.Output4Final;
+import mappers.Mapper1;
+import mappers.Mapper4Part2;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.util.Tool;
+import org.apache.hadoop.util.ToolRunner;
+
+import reducers.Reducer4;
+import reducers.Reducer4Part2;
+
+public class Task4 extends Configured implements Tool {
+/*Given a time interval (in the form of two timestamps, earlier one first) and a number k, print all
+article_ids for the k pages with the highest number of modifications in the given time
+interval, plus the actual number of modifications for each page. The output should be sorted
+first by the number of modifications and then by article_id
+*/
+	public void usage(){
+		System.err.println("Task4 ISO-8601_Timestamp_Earliest ISO-8061_Timestamp_Latest k-highest_modifications");
+	}
+	
+	
+	@Override
+	public int run(String[] args) throws Exception {
+		/* Set configuration */
+		Configuration conf1 = new Configuration();
+		// Set conf variables pointing to the BD4 cluster
+		conf1.set("fs.defaultFS", "hdfs://bigdata-06.dcs.gla.ac.uk:8020");
+		conf1.set("mapred.job.tracker", "bigdata-06.dcs.gla.ac.uk:8021");
+		conf1.set("mapred.jar", "file:///users/level4/1003264m/DatData/Code/Task4.jar");
+		FileSystem fs1 = FileSystem.get(conf1);
+		fs1.delete(new Path("/user/1003264m/temp"), true);
+
+		/* initialise Jon */
+		Job job1 = new Job(conf1);
+		job1.setJobName("Task 4");
+		job1.setJarByClass(Task4.class);
+
+		/* Read in timestamp and minimum modifications arguments */
+		if (args.length < 3 ) {
+			usage();
+			return 1;
+		} else {
+			job1.getConfiguration().set("earliest_timestamp", args[0]);
+			job1.getConfiguration().set("latest_timestamp", args[1]);
+			job1.getConfiguration().set("k_highest", args[2]);
+		}
+
+		/*
+		 * Set I/O
+		 */
+		job1.setInputFormatClass(Input1.class);
+		job1.setOutputFormatClass(Output4.class);
+		
+		
+		/* Set classes for mappers/reducers */
+		job1.setMapperClass(Mapper1.class);
+		job1.setReducerClass(Reducer4.class);
+
+		
+		/* Set output key values */
+		job1.setOutputKeyClass(LongWritable.class);
+		job1.setOutputValueClass(Text.class);
+
+		FileInputFormat.addInputPath(job1, new Path("/user/bd4-project1/enwiki-20080103-sample.txt"));
+		FileOutputFormat.setOutputPath(job1, new Path("/user/1003264m/temp"));
+		
+		/* submit job */
+		job1.submit();
+		job1.waitForCompletion(true);
+		
+		/* Set configuration */
+		Configuration conf2 = new Configuration();
+		// Set conf variables pointing to the BD4 cluster
+		conf2.set("fs.defaultFS", "hdfs://bigdata-06.dcs.gla.ac.uk:8020");
+		conf2.set("mapred.job.tracker", "bigdata-06.dcs.gla.ac.uk:8021");
+		conf2.set("mapred.jar", "file:///users/level4/1003264m/DatData/Code/Task4.jar");
+		FileSystem fs2 = FileSystem.get(conf1);
+		fs2.delete(new Path("/user/1003264m/output"), true);
+
+		/* initialise Jon */
+		Job job2 = new Job(conf1);
+		job2.setJobName("Task 4");
+		job2.setJarByClass(Task4.class);
+
+		/* Read in timestamp and minimum modifications arguments */
+		if (args.length < 3 ) {
+			usage();
+			return 1;
+		} else {
+			job2.getConfiguration().set("earliest_timestamp", args[0]);
+			job2.getConfiguration().set("latest_timestamp", args[1]);
+			job2.getConfiguration().set("k_highest", args[2]);
+		}
+
+		/*
+		 * Set I/O
+		 */
+		job2.setInputFormatClass(Input4.class);
+		job2.setOutputFormatClass(Output4Final.class);
+		
+		
+		/* Set classes for mappers/reducers */
+		job2.setMapperClass(Mapper4Part2.class);
+		job2.setReducerClass(Reducer4Part2.class);
+		job2.setSortComparatorClass(LongWritable.DecreasingComparator.class);
+		
+		/* Set output key values */
+		job2.setOutputKeyClass(LongWritable.class);
+		job2.setOutputValueClass(LongWritable.class);
+
+		FileInputFormat.addInputPath(job2, new Path("/user/1003264m/temp/output4.txt"));
+		FileOutputFormat.setOutputPath(job2, new Path("/user/1003264m/output"));
+		
+		/* submit job */
+		job2.submit();
+		//TODO: Delete Temp
+		return (job2.waitForCompletion(true) ? 0 : 1);
+	}
+
+	public static void main(String[] args) throws Exception {
+		 ToolRunner.run(new Configuration(), new Task4(), args);
+	}
+}

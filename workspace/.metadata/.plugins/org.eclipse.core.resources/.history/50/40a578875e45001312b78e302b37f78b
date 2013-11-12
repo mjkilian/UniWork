@@ -1,0 +1,32 @@
+package reducers;
+
+import java.io.IOException;
+import java.util.Date;
+import java.util.TreeMap;
+
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+import util.TimestampParser;
+
+public class IndexBuilderReducer extends
+		Reducer<LongWritable, Text, LongWritable, TreeMap<Date,String>> {
+
+	@Override
+	protected void reduce(LongWritable key, Iterable<Text> values, Context context)
+			throws IOException, InterruptedException {
+		TreeMap<Date, String> map = new TreeMap<Date, String>();
+		for(Text value : values){
+			String[] items = value.toString().split(" ");
+			String revID = items[0];
+			Date date = TimestampParser.parseDate(items[1]);
+			map.put(date, revID);
+		}
+		context.write(key,map);
+		
+	}
+	
+	
+
+}

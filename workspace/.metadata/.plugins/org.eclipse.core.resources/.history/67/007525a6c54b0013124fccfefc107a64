@@ -1,0 +1,197 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+
+public class Sampling {
+	private double scalingFactor;
+	
+	private double[] sampling;
+	
+	/** The sampling rate. */
+	private double samplingRate;
+	
+	private double length; //in seconds
+	
+	
+	public Sampling(File file, double len,double scalingFactor){
+		this.length = len;
+		this.scalingFactor = scalingFactor;
+		
+		//instantiate file reader
+		Scanner reader = null;
+		try {
+			reader = new Scanner(file);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		//take in samples
+		List<Double> sampleQueue = new ArrayList<Double>(3000);
+		while(reader.hasNextLine()){
+			sampleQueue.add(Double.parseDouble(reader.nextLine()));
+		}
+		
+		
+		
+		this.sampling = new double[sampleQueue.size()];
+		for(int i = 0; i < sampleQueue.size(); i++){
+			sampling[i] = sampleQueue.get(i) / this.scalingFactor;
+		}
+		sampleQueue = null;
+		
+		
+		this.samplingRate = (sampling.length / len);
+	}
+
+	public int rectangularWindow(int n, double windowLength){
+		//convert window length from seconds to amount of samplings to consider
+		windowLength = (int) (this.sampling.length / (this.length/windowLength)); //work out number of samples to be considered in the window
+		if(n >= 0 && n <windowLength)
+			return 1;
+		return 0;
+	}
+	
+	public double[] signalNormalised(int step, double windowLength){
+		double max = 0; //usable since there are no negative values
+		for(int i = 0; i < sampling.length; i++){
+			if(magnitudePlot[i] > max)
+				max = magnitudePlot[i];
+		}
+		for(int i = 0; i < magnitudePlot.length; i++){
+			magnitudePlot[i] = magnitudePlot[i] / max;
+		}
+		return magnitudePlot;
+	}
+	
+	public double[] shortTermAverageMagnitude(int step, double windowLength){
+		double[] magnitudePlot = new double[this.sampling.length];
+		for(int n = 0; n < this.sampling.length; n+=step){
+			double magnitude = 0;
+			for(int k = 0; n -k >= 0; k++){
+				magnitude += Math.abs(this.sampling[k])  * rectangularWindow(n-k,windowLength);
+			}
+			magnitudePlot[n] = magnitude;
+		}
+		return magnitudePlot;
+	}
+	
+	public double[] shortTermAverageMagnitudeNormalised(int step, double windowLength){
+		double magnitudePlot[] = this.shortTermAverageMagnitude(step, windowLength);
+		double max = 0; //usable since there are no negative values
+		for(int i = 0; i < magnitudePlot.length; i++){
+			if(magnitudePlot[i] > max)
+				max = magnitudePlot[i];
+		}
+		for(int i = 0; i < magnitudePlot.length; i++){
+			magnitudePlot[i] = magnitudePlot[i] / max;
+		}
+		return magnitudePlot;
+	}
+	
+	public double[] shortTermAverageEnergy(int step, double windowLength){
+		double[] energyPlot = new double[this.sampling.length];
+		for(int n = 0; n < this.sampling.length; n+=step){
+			double energy = 0;
+			for(int k = 0; n -k >= 0; k++){
+				//note rounding used for scalability
+				energy += Math.pow(this.sampling[k],2) * rectangularWindow(n-k,windowLength);
+			}
+			energyPlot[n] = energy;
+		}
+		return energyPlot;
+	}
+
+	public double[] shortTermAverageEnergyNormalised(int step, double windowLength){
+		double energyPlot[] = this.shortTermAverageEnergy(step, windowLength);
+		double max = 0; //usable since there are no negative values
+		for(int i = 0; i < energyPlot.length; i++){
+			if(energyPlot[i] > max)
+				max = energyPlot[i];
+		}
+		for(int i = 0; i < energyPlot.length; i++){
+			energyPlot[i] = energyPlot[i] / max;
+		}
+		return energyPlot;
+	}
+	
+	
+	public double[] shortTermAverageZeroCrossingRate(int step, double windowLength){
+		int N = (int) (this.sampling.length / (this.length/windowLength));//needed to divide zcr sum by window size
+		double[] zcrPlot = new double[this.sampling.length];
+		for(int n = 0; n < this.sampling.length; n+=step){
+			double zcr = 0;
+			for(int k = 1; n -k >= 0; k++){
+				zcr += Math.abs(Math.signum(this.sampling[k]) - Math.signum(this.sampling[k-1])) * rectangularWindow(n-k,windowLength);
+			}
+			zcrPlot[n] = zcr/(2*N);
+		}
+		zcrPlot[0] = 0.0; //correct for first value
+		return zcrPlot;
+	}
+	
+	public double[] shortTermAverageZeroCrossingRateNormalised(int step, double windowLength){
+		double zcrPlot[] = this.shortTermAverageZeroCrossingRate(step, windowLength);
+		double max = 0; //usable since there are no negative values
+		for(int i = 0; i < zcrPlot.length; i++){
+			if(zcrPlot[i] > max)
+				max = zcrPlot[i];
+		}
+		for(int i = 0; i < zcrPlot.length; i++){
+			zcrPlot[i] = zcrPlot[i] / max;
+		}
+		return zcrPlot;
+	}
+	
+	public double[] getSampling() {
+		return sampling;
+	}
+
+
+	public double getSamplingRate() {
+		return samplingRate;
+	}
+
+
+	public double getLength() {
+		return length;
+	}
+	
+	
+	
+	public double getScalingFactor() {
+		return scalingFactor;
+	}
+
+	public void setScalingFactor(double scalingFactor) {
+		this.scalingFactor = scalingFactor;
+	}
+
+	public String toString(){
+		String output = "";
+		for(int i = 0; i < sampling.length; i++){
+			output += sampling[i] + "\n";
+		}
+		return output;
+	}
+	
+	public static void main(String args[]){
+		Sampling s = new Sampling(new File("data/laboratory.dat"),0.3,100);
+		System.out.println(s);
+		System.out.println("SAMPLING RATE: " + (int)s.getSamplingRate() + "Hz");
+		
+		double magnitudePlot[] = s.shortTermAverageMagnitude(1,0.03);
+		double energyPlot[] = s.shortTermAverageEnergy(1, 0.03);
+		double zcrPlot[] = s.shortTermAverageZeroCrossingRate(1, 0.03);
+		
+		System.out.println(Arrays.toString(magnitudePlot));
+		System.out.println(Arrays.toString(energyPlot));
+		System.out.println(Arrays.toString(zcrPlot));
+	}
+	
+	
+	
+}

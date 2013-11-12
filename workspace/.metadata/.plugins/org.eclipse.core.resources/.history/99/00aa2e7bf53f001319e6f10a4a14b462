@@ -1,0 +1,17 @@
+import org.jfree.data.xy.XYSeries;
+
+
+public class GraphBuilder {
+	
+	
+	private XYSeries buildSeriesAgainstTime(String name, Sampling s, double values[], double scalingFactor){
+		XYSeries plot = new XYSeries(name);
+		for(double i = 0; i < s.getSampling().length; i++){
+			
+			plot.add(i / (s.getSamplingRate() / 1000), values[(int) i] * scalingFactor);
+		}
+		return plot;
+	}
+	
+	
+}

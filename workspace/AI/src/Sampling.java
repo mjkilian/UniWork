@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
-// TODO: Auto-generated Javadoc
 /**
  * The Class Sampling. Represents a sampling of sound over a given time period
  */
 public class Sampling {
 	
 	/** The sampling, where each entry is in decibels */
-	private int[] sampling;
+	private double[] sampling;
 	
 	/** The sampling rate. */
-	private float samplingRate;
+	private double samplingRate;
+	
+	private double length;
 	
 	/**
 	 * Instantiates a new sampling.
@@ -23,7 +23,8 @@ public class Sampling {
 	 * @param file the input file for the sampling
 	 * @param len the length of the sampling in milliseconds
 	 */
-	public Sampling(File file, float len){
+	public Sampling(File file, double len){
+		this.length = len;
 		
 		//instantiate file reader
 		Scanner reader = null;
@@ -34,27 +35,31 @@ public class Sampling {
 		}
 		
 		//take in samples
-		List<Integer> sampleQueue = new ArrayList<Integer>(1000);
+		List<Double> sampleQueue = new ArrayList<Double>(3000);
 		while(reader.hasNextLine()){
-			sampleQueue.add(Integer.parseInt(reader.nextLine()));
+			sampleQueue.add(Double.parseDouble(reader.nextLine()));
 		}
 		
-		this.sampling = new int[sampleQueue.size()];
+		
+		
+		this.sampling = new double[sampleQueue.size()];
 		for(int i = 0; i < sampleQueue.size(); i++){
-			sampling[i] = sampleQueue.remove(0);
+			sampling[i] = sampleQueue.get(i);
 		}
 		sampleQueue = null;
 		
 		/*calculate sampling frequency (the 1000 is to convert correctly from milliseconds)*/
 		this.samplingRate = (sampling.length / len) * 1000;
 	}
+	
+	
 
 	/**
 	 * Gets the sampling data.
 	 *
 	 * @return the sampling
 	 */
-	public int[] getSampling() {
+	public double[] getSampling() {
 		return sampling;
 	}
 
@@ -63,11 +68,27 @@ public class Sampling {
 	 *
 	 * @return the sampling rate
 	 */
-	public float getSamplingRate() {
+	public double getSamplingRate() {
 		return samplingRate;
 	}
 
+	public String toString(){
+		String output = "";
+		for(int i = 0; i < sampling.length; i++){
+			output += sampling[i] + "\n";
+		}
+		return output;
+	}
 	
+	public double getLength() {
+		return length;
+	}
+
+
+	public static void main(String args[]){
+		Sampling s = new Sampling(new File("data/laboratory.dat"),300);
+		System.out.println(s);
+	}
 	
 	
 }

@@ -1,0 +1,23 @@
+import java.io.File;
+
+import javax.swing.JFrame;
+
+
+public class PlotSignals {
+	public static void main(String args[]){
+		Sampling s = new Sampling(new File("data/laboratory.dat"),300);
+		GraphBuilder builder = new GraphBuilder(s);
+		
+		JFrame frame = new JFrame("Signal Analysis");
+		//frame.add(builder.buildGraphAllMetrics(1));
+		//frame.add(builder.buildGraph("Original Signal", "s[t]", s.getSampling(),1));
+		frame.add(builder.buildGraph("Energy", "E[t]", sta.shortTermEnergy(s,30,10), 10, 1));
+		//frame.add(builder.buildGraph("Magnitude","M[t]",sta.shortTermMagnitude(s), 1));
+		//frame.add(builder.buildGraph("Average Zero Crossing Rate", "Z[t]", sta.shortTermAverageZCR(s), 1));
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setVisible(true);
+		
+	}
+}

@@ -1,0 +1,9 @@
+import java.io.File;
+
+
+public class PlotSignals {
+	public static void main(String args[]){
+		Sampling s = new Sampling(new File("data/laboratory.dat"),300);
+		SignalGraph = new SignalGraph(s);
+	}
+}

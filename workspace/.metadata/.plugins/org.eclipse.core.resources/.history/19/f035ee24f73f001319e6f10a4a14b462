@@ -1,0 +1,15 @@
+import java.io.File;
+
+import javax.swing.JFrame;
+
+
+public class PlotSignals {
+	public static void main(String args[]){
+		Sampling s = new Sampling(new File("data/laboratory.dat"),300);
+		ShortTermAnalysis sta = new ShortTermAnalysis();
+		GraphBuilder builder = new GraphBuilder(s);
+		
+		JFrame frame = new JFrame();
+		frame.add(comp)
+	}
+}
