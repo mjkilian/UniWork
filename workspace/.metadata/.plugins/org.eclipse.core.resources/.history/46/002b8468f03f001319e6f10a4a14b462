@@ -1,8 +1,0 @@
-
-
-public class Snippet {
-	public static void main(String[] args) {
-		super("Signal Graph");
-		    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
-}

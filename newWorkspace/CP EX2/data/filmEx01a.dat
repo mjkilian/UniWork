@@ -1,0 +1,14 @@
+filmEx01a
+10
+5
+1 0 1 0 0 1 0 1 1 1 20
+1 1 1 1 1 0 1 0 1 0 5
+0 1 0 0 0 0 1 1 0 0 4
+1 1 0 0 1 1 0 0 0 0 10
+0 0 0 1 0 0 0 1 1 0 4
+
+1 1 3 1 3 1 1 2 1 3
+//
+// same as filmEx01 but with the reductions
+// discussed in INFORMS 23,1 2011
+//

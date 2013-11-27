@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<typeInfoHistroy>
-<typeInfo handle="=BD1/\/usr\/lib\/jvm\/java-1.7.0-openjdk-1.7.0.45.x86_64\/jre\/lib\/rt.jar&lt;java.util(Date.class[Date" modifiers="33" timestamp="1382468465000"/>
-<typeInfo handle="=BD1/\/users\/level4\/1003819k\/DatData\/hadoop-libs\/hadoop-core-2.0.0-mr1-cdh4.4.0.jar&lt;org.apache.hadoop.mapreduce(Mapper.class[Mapper" modifiers="33" timestamp="1383325828000"/>
-<typeInfo handle="=BD1/IndexedQueries&lt;mappers{IndexMapper2.java[IndexMapper2" modifiers="1" timestamp="1383753088000"/>
-<typeInfo handle="=BD1/IndexedQueries&lt;mappers{IndexMapper1.java[IndexMapper1" modifiers="1" timestamp="1383928596000"/>
-</typeInfoHistroy>

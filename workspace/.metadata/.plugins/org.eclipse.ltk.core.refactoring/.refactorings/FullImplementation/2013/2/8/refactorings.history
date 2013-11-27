@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;FullImplementation/src/UserLoader.java~&apos; to &apos;UserLoader.java&apos;" description="Rename resource &apos;UserLoader.java~&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/UserLoader.java~" name="UserLoader.java" stamp="1361195771168" updateReferences="true"/>
-</session>
