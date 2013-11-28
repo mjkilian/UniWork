@@ -1,0 +1,108 @@
+import javax.swing.JPanel;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
+
+public class GraphBuilder {
+	private Sampling s;
+	
+	public GraphBuilder(Sampling s){
+		this.s = s;
+	}
+	
+	private XYSeries buildSeriesAgainstTime(String name, Sampling s, double values[],double stepSize){
+		XYSeries plot = new XYSeries(name);
+		for(double i = 0; i < values.length; i += stepSize){
+			plot.add((i / (s.getSamplingRate() / 1000)) * stepSize, values[(int) i]);
+		}
+		return plot;
+	}
+	
+	public JPanel buildGraph(String name, String axisLabel , double[] values, double stepSize){
+		XYSeries original = buildSeriesAgainstTime(name,s,values,1);
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        dataset.addSeries(original);
+  
+        JFreeChart chart = ChartFactory.createXYLineChart(
+                name + " vs. Time",
+                "Time (ms)",
+                axisLabel,
+                dataset, 
+                PlotOrientation.VERTICAL,
+                true,
+                true,
+                false
+                );
+
+        JPanel panel = new JPanel();
+        ChartPanel chartPanel = new ChartPanel(chart);
+        panel.add(chartPanel);
+        return panel;
+	}
+	
+	public JPanel buildGraphAllMetrics(){
+		
+		XYSeries original = buildSeriesAgainstTime("Signal",s,s.signalNormalised(1, 0.03),1);
+		XYSeries energy = buildSeriesAgainstTime("Energy",s,s.shortTermAverageEnergyNormalised(1,0.03),1);
+		XYSeries magnitude = buildSeriesAgainstTime("Magnitude",s,s.shortTermAverageMagnitudeNormalised(1, 0.03),1);
+		XYSeries zeroCrossing =  buildSeriesAgainstTime("Average Zero Crossing Rate",s,s.shortTermAverageZeroCrossingRateNormalised(1,0.03),1);
+		
+
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        dataset.addSeries(original);
+        dataset.addSeries(energy);
+        dataset.addSeries(magnitude);
+        dataset.addSeries(zeroCrossing);
+        
+
+        JFreeChart chart = ChartFactory.createXYLineChart(
+                "All Metrics vs. Time (normalised)",
+                "Time (ms)",
+                "s[t],E[t],M[t],Z[t]",
+                dataset, 
+                PlotOrientation.VERTICAL,
+                true,
+                true,
+                false
+                );
+
+        JPanel panel = new JPanel();
+        ChartPanel chartPanel = new ChartPanel(chart);
+        panel.add(chartPanel);
+        return panel;
+	}
+	
+	private static XYSeries buildSeries(String name, double[] x, double[] y){
+		XYSeries series = new XYSeries(name);
+		for(int i = 0; i < x.length; i++){
+			series.add(x[i], y[i]);
+		}
+		return series;
+	}
+	
+	public static JPanel buildScatter(String graphName,String datasetName, String xLabel, String yLabel, double[] x, double[] y){
+		if(x.length != y.length){
+			System.err.println("Number of samples for X Axis does not match number for Y Axis");
+			return null;
+		}
+		XYSeries plot = buildSeries(datasetName,x,y);
+		System.err.println(xLabel + " VS " + yLabel);
+		for(int i = 0; i < plot.getItemCount(); i++){
+			System.out.println("(" + plot.getX(i)+","+plot.getY(i)+")");
+		}		
+				
+		XYSeriesCollection dataset = new XYSeriesCollection(plot);
+		JFreeChart scatter = ChartFactory.createScatterPlot(graphName, xLabel, yLabel, dataset);
+		
+		JPanel panel = new JPanel();
+		ChartPanel scatterPanel = new ChartPanel(scatter);
+		panel.add(scatterPanel);
+		return panel;
+	}
+	
+}

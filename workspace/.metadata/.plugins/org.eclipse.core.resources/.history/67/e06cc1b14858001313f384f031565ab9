@@ -1,0 +1,12 @@
+
+public class KFoldValidator {
+	SoundClassifier classifier;
+	static final double priorProbabilitySpeech = 0.5;
+	
+	private static readData(File in){
+		
+	}
+	public static void main(String[] args){
+		
+	}
+}

@@ -1,0 +1,176 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.Scanner;
+
+
+public class KFoldValidator {
+	SoundClassifier classifier;
+	private double[] Espeech;
+	private double[] Mspeech;
+	private double[] Zspeech;
+	
+	private double[] Esilence;
+	private double[] Msilence;
+	private double[] Zsilence;
+	
+	private int noSpeech;
+	private int noSilence;
+	private int noSamples;
+	final double priorProbabilitySpeech = 0.5;
+	
+	
+	public KFoldValidator( double[] e, double[] m,
+			double[] z, int noSpeech, int noSilence) {
+		super();
+		Espeech = Arrays.copyOfRange(e, 0, noSpeech);
+		Esilence = Arrays.copyOfRange(e, noSpeech, e.length);
+		Mspeech = Arrays.copyOfRange(m, 0, noSpeech);
+		Msilence = Arrays.copyOfRange(m, noSpeech, m.length);
+		Zspeech = Arrays.copyOfRange(z, 0, noSpeech);
+		Zsilence = Arrays.copyOfRange(z,noSpeech,z.length);
+		
+		this.noSpeech = noSpeech;
+		this.noSilence = noSilence;
+		this.noSamples = noSpeech + noSilence;
+	}
+	
+	public double[] getTraining(double[] speech, double[] silence, int startTestFold, int endTestFold, int sizeOfFold){
+		double training[] = new double[noSamples - sizeOfFold];
+		int cursor = 0; //where are we in the training array
+		//get values from speech
+		for(int i = 0; i < noSpeech; i++){
+			if(i>= startTestFold && i < endTestFold)
+				continue; //dont add values in the test fold
+			else
+				training[cursor++] = speech[i];
+		}
+		//get values from silence
+		for(int i = 0; i < noSilence; i++){
+			if(i>= startTestFold && i < endTestFold)
+				continue; //dont add values in the test fold
+			else
+				training[cursor++] = silence[i];
+		}
+		
+		return training;
+	}
+	
+	private double[] getTest(double[] speech, double[] silence, int startTestFold, int endTestFold, int sizeOfFold){
+		double[] test = new double[sizeOfFold];
+		int cursor = 0; //where are we in the test array
+		
+		//get values from speech
+		for(int i = startTestFold; i < endTestFold; i++){
+			test[cursor++] = speech[i];
+		}
+		//get values from silence
+		for(int i = startTestFold; i < endTestFold; i++){
+			test[cursor++] = silence[i];
+		}
+		
+		return test;
+	}
+	
+	public double KFoldTest(int noFolds, int foldNo){
+		int sizeOfFold = (noSamples / noFolds); //size of segment of test fold (total of speech and silence)
+		int startTestFold = foldNo * sizeOfFold / 2; //start and end of test fold in each of the speech or silence arrays
+		int endTestFold = startTestFold + sizeOfFold / 2; 
+		System.out.println("SIZE: " + sizeOfFold+ " START: " + startTestFold +  " END: " + endTestFold);
+		
+		double[] trainingE = getTraining(Espeech,Esilence,startTestFold,endTestFold,sizeOfFold);
+		double[] trainingM = getTraining(Mspeech,Msilence,startTestFold,endTestFold,sizeOfFold);
+		double[] trainingZ = getTraining(Zspeech,Zsilence,startTestFold,endTestFold,sizeOfFold);
+		
+		
+		double[] testE = getTest(Espeech,Esilence,startTestFold,endTestFold,sizeOfFold);
+		double[] testM = getTest(Mspeech,Msilence,startTestFold,endTestFold,sizeOfFold);
+		double[] testZ = getTest(Zspeech,Zsilence,startTestFold,endTestFold,sizeOfFold);
+		
+	
+		SoundClassifier classifier = new SoundClassifier(priorProbabilitySpeech,Arrays.copyOfRange(trainingE, 0, trainingE.length/2),
+				Arrays.copyOfRange(trainingM, 0, trainingM.length/2),
+				Arrays.copyOfRange(trainingZ, 0, trainingZ.length/2),
+				Arrays.copyOfRange(trainingE, trainingE.length/2, trainingE.length),
+				Arrays.copyOfRange(trainingM, trainingM.length/2, trainingM.length),
+				Arrays.copyOfRange(trainingZ, trainingZ.length/2, trainingZ.length));
+		
+		int noCorrect = 0;
+		/*Test speech instances*/
+		for(int i = 0; i < sizeOfFold; i++){
+			if(classifier.classify(testE[i], testM[i], testZ[i]) == "Speech"){
+				noCorrect += 1;
+			}
+		}
+		
+		/*Test silence instances*/
+		for(int i = sizeOfFold/2; i < sizeOfFold; i++){
+			if(classifier.classify(testE[i], testM[i], testZ[i]) == "Silence"){
+				noCorrect += 1;
+			}
+		}
+		
+		double percentageCorrect = (noCorrect/sizeOfFold) * 100;
+		return percentageCorrect;
+		
+	}
+	
+	public static void main(String args[]){
+		KFoldValidator validator;
+		
+		File input = null;
+		int noSpeech; //how many of the files are speech
+		int noSilence;//how many are silence
+		int totalSignals;
+		/*Find input file*/
+		if(args.length < 3){
+			System.err.println("KFoldValidator noSpeech noSilence inputFile");
+			System.exit(1);
+		}
+		
+		noSpeech = Integer.parseInt(args[0]);
+		noSilence = Integer.parseInt(args[1]);
+		totalSignals = noSpeech + noSilence;
+		input = new File(args[2]);
+		
+		/*Instantiate file reader*/
+		Scanner fileScan = null;
+		try {
+			fileScan = new Scanner(input);
+		} catch (FileNotFoundException e) {
+			System.err.println("Could not find or open input file provided");
+			e.printStackTrace();
+		}
+		
+		/*instantiate arrays of data*/
+		double[] E = new double[totalSignals];
+		double[] M = new double[totalSignals];
+		double[] Z = new double[totalSignals];
+	
+	
+		
+		/*Retrieve data from file*/
+		if(fileScan.hasNextLine()){
+			fileScan.nextLine(); //read off column headers
+		}
+		
+		int currentSample = 0; //index of sample we are currently looking at
+		Scanner lineScan; //scans each line
+		while(fileScan.hasNextLine() & currentSample < totalSignals){
+			String line = fileScan.nextLine();
+			lineScan = new Scanner(line);
+			lineScan.useDelimiter(",");
+			E[currentSample] = lineScan.nextDouble();
+			M[currentSample] = lineScan.nextDouble();
+			Z[currentSample] = lineScan.nextDouble();
+			currentSample++;
+			lineScan.close();
+		}
+		validator = new KFoldValidator(E,M,Z,50,50);
+		
+		System.out.println(validator.KFoldTest(10, 0));
+	
+	}
+	
+	
+}

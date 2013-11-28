@@ -1,0 +1,34 @@
+import java.util.Arrays;
+
+
+public class KFoldValidator {
+	SoundClassifier classifier;
+	private double[] E;
+	private double[] M;
+	private double[] Z;
+	private int noSpeech;
+	private int noSilence;
+	private int noSamples;
+	final double priorProbabilitySpeech = 0.5;
+	
+	
+	public KFoldValidator( double[] e, double[] m,
+			double[] z, int noSpeech, int noSilence) {
+		super();
+		E = e;
+		M = m;
+		Z = z;
+		this.noSpeech = noSpeech;
+		this.noSilence = noSilence;
+		this.noSamples = noSpeech + noSilence;
+	}
+	
+	private double getTraining(double[] x,int noFolds, int foldNo){
+		double[] training = new double[(x.length/noFolds)*]
+	}
+	public KFoldTest(int noFolds, int foldNo){
+		
+	}
+	
+	
+}

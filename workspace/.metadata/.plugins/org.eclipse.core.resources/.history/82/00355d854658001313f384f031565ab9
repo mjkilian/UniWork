@@ -1,0 +1,62 @@
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+
+public class Utilities {
+	
+	public static double averageValueOfArray(double[] array){
+		double total = 0;
+		for(int i = 0; i < array.length; i++){
+			total += array[i];
+		}
+		return total/((double) array.length);
+	}
+	
+	public static double averageLogarithmicValueOfArray(double[] array){
+		double total = 0;
+		for(int i = 0; i < array.length; i++){
+			if(array[i] > 0)
+				total += Math.log(array[i]);
+		}
+		return total/((double) array.length);
+	}
+	
+	public static void readAnalysisFile(File input, int noSpeech, int noSilence, double[] E, double[] M, double[] Z){
+		int totalSignals = noSpeech + noSilence;
+		
+		/*Instantiate file reader*/
+		Scanner fileScan = null;
+		try {
+			fileScan = new Scanner(input);
+		} catch (FileNotFoundException e) {
+			System.err.println("Could not find or open input file provided");
+			e.printStackTrace();
+		}
+		
+		/*instantiate arrays of data*/
+		E = new double[totalSignals];
+		M = new double[totalSignals];
+		Z = new double[totalSignals];
+	
+		
+		/*Retrieve data from file*/
+		if(fileScan.hasNextLine()){
+			fileScan.nextLine(); //read off column headers
+		}
+		
+		int currentSample = 0; //index of sample we are currently looking at
+		Scanner lineScan; //scans each line
+		while(fileScan.hasNextLine() & currentSample < totalSignals){
+			String line = fileScan.nextLine();
+			lineScan = new Scanner(line);
+			lineScan.useDelimiter(",");
+			E[currentSample] = lineScan.nextDouble();
+			M[currentSample] = lineScan.nextDouble();
+			Z[currentSample] = lineScan.nextDouble();
+			currentSample++;
+			lineScan.close();
+		}
+		
+		fileScan.close();
+	}
+}

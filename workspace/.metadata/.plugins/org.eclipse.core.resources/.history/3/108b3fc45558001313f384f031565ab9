@@ -1,0 +1,88 @@
+import java.util.Arrays;
+
+
+public class KFoldValidator {
+	SoundClassifier classifier;
+	private double[] Espeech;
+	private double[] Mspeech;
+	private double[] Zspeech;
+	
+	private double[] Esilence;
+	private double[] Msilence;
+	private double[] Zsilence;
+	
+	private int noSpeech;
+	private int noSilence;
+	private int noSamples;
+	final double priorProbabilitySpeech = 0.5;
+	
+	
+	public KFoldValidator( double[] e, double[] m,
+			double[] z, int noSpeech, int noSilence) {
+		super();
+		Espeech = Arrays.copyOfRange(e, 0, noSpeech);
+		Esilence = Arrays.copyOfRange(e, noSpeech, e.length-1);
+		Mspeech = Arrays.copyOfRange(m, 0, noSpeech);
+		Msilence = Arrays.copyOfRange(m, noSpeech, m.length-1);
+		Zspeech = Arrays.copyOfRange(z, 0, noSpeech);
+		Zsilence = Arrays.copyOfRange(z,noSpeech,z.length-1);
+		
+		this.noSpeech = noSpeech;
+		this.noSilence = noSilence;
+		this.noSamples = noSpeech + noSilence;
+	}
+	
+	public double[] getTraining(double[] speech, double[] silence, int startTestFold, int endTestFold, int sizeOfFold){
+		double training[] = new double[noSamples - sizeOfFold];
+		int cursor = 0; //where are we in the training array
+		
+		//get values from speech
+		for(int i = 0; i < noSpeech; i++){
+			if(i>= startTestFold && i < endTestFold)
+				continue; //dont add values in the test fold
+			else
+				training[cursor++] = speech[i];
+		}
+		//get values from silence
+		for(int i = 0; i < noSilence; i++){
+			if(i>= startTestFold && i < endTestFold)
+				continue; //dont add values in the test fold
+			else
+				training[cursor++] = silence[i];
+		}
+		
+		return training;
+	}
+	
+	private getTest(double[] speech, double[] silence, int startTestFold, int endTestFold, int sizeOfFold){
+		double[] test = new double[sizeOfFold];
+		int cursor = 0; //where are we in the test array
+		
+		//get values from speech
+		for(int i = startTestFold; i < endTestFold; i++){
+			test[cursor++] = speech[i];
+		}
+		//get values from silence
+		for(int i = startTestFold; i < endTestFold; i++){
+			test[cursor++] = silence[i];
+		}
+		
+		return test;
+	}
+	
+	public double KFoldTest(int noFolds, int foldNo){
+		int sizeOfFold = (noSamples / noFolds) / 2; //size of segment of test fold from each of speech or silence
+		int startTestFold = foldNo * sizeOfFold;
+		int endTestFold = startTestFold + sizeOfFold; 
+		
+		double[] trainingE = getTraining(E,noFolds,foldNo,startTestFold,endTestFold,sizeOfFold);
+		double[] trainingM = getTraining(M,noFolds,foldNo,startTestFold,endTestFold,sizeOfFold);
+		double[] trainingZ =
+		
+		double[] testE = get
+		
+		
+	}
+	
+	
+}

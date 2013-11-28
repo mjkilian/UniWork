@@ -1,0 +1,50 @@
+
+public class LinearGaussian {
+	private double[] values;
+	private double mean;
+	private double variance;
+	
+	/**Works out the (Ei - m)^2 term for each value
+	 * The produced array can be used to calculate the variance by finding its average.
+	 * Note it returns a copy of the array.
+	 * @param values
+	 * @return
+	 */
+	private double[] varianceArray(){
+		double[] varianceVals = new double[values.length];
+		for(int i = 0; i < values.length; i++){
+			varianceVals[i] = Math.pow(values[i] - mean , 2.0);
+		}
+		return varianceVals;
+	}
+	
+	public LinearGaussian(double[] values) {
+		super();
+		this.values = values;
+		
+		/*calculate mean*/
+		mean = Utilities.averageValueOfArray(values);
+		variance = Utilities.averageValueOfArray(varianceArray());
+	}
+	
+	public double probability(double x){
+		double firstTerm = 1.0 / Math.sqrt(2 * Math.PI * variance);
+		double secondTerm = Math.exp( -(Math.pow((x-mean),2.0)) / (2 * variance) );
+		return firstTerm * secondTerm;
+	}
+
+	public double[] getValues() {
+		return values;
+	}
+
+	public double getMean() {
+		return mean;
+	}
+
+	public double getVariance() {
+		return variance;
+	}
+	
+	
+	
+}

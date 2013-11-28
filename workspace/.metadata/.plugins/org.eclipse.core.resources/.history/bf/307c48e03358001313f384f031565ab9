@@ -1,0 +1,22 @@
+import java.util.HashMap;
+import java.util.Map;
+
+
+public class SoundClassifier {
+	private Map<String,LinearGaussian> speechGaussians;
+	private Map<String,LinearGaussian> silenceGaussians;
+	
+	public SoundClassifier(double[] speechE, double[] speechM, double[] speechZ, double[] silenceE, double[] silenceM, double[] silenceZ){
+		speechGaussians = new HashMap<String,LinearGaussian>();
+		silenceGaussians = new HashMap<String,LinearGaussian>();
+		
+		speechGaussians.put("E", new LinearGaussian(speechE));
+		speechGaussians.put("M", new LinearGaussian(speechM));
+		speechGaussians.put("Z", new LinearGaussian(speechZ));
+		
+		silenceGaussians.put("E", new LinearGaussian(silenceE));
+		silenceGaussians.put("M", new LinearGaussian(silenceM));
+		silenceGaussians.put("Z", new LinearGaussian(silenceZ));
+	}
+
+}

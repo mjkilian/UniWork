@@ -1,0 +1,72 @@
+import java.util.HashMap;
+import java.util.Map;
+
+
+public class SoundClassifier {
+	private Map<String,LinearGaussian> speechGaussians;
+	private Map<String,LinearGaussian> silenceGaussians;
+	
+	private double priorProbabilitySpeech = 0.5;
+	
+	public SoundClassifier(double priorProbabilitySpeech, double[] speechE, double[] speechM, double[] speechZ, double[] silenceE, double[] silenceM, double[] silenceZ){
+		this.priorProbabilitySpeech = priorProbabilitySpeech;
+		speechGaussians = new HashMap<String,LinearGaussian>();
+		silenceGaussians = new HashMap<String,LinearGaussian>();
+		
+		speechGaussians.put("E", new LinearGaussian(speechE));
+		speechGaussians.put("M", new LinearGaussian(speechM));
+		speechGaussians.put("Z", new LinearGaussian(speechZ));
+
+		silenceGaussians.put("E", new LinearGaussian(speechE));
+		silenceGaussians.put("M", new LinearGaussian(speechM));
+		silenceGaussians.put("Z", new LinearGaussian(speechZ));
+	
+	}
+	
+	public String classify( double E, double M, double Z){
+		double probabilitySpeech;
+		double probabilitySilence;
+		double pE;
+		double pM;
+		double pZ;
+		
+		System.out.println ("E: " + E);
+		System.out.println ("M: " + M);
+		System.out.println ("Z: " + Z
+				);
+		/*Using a Naive Bayes method we can work out the probability that a file belongs to a class C (either speech or silence)
+		 * using the following:
+		 * P(C|E,M,Z) = aP(C)P(E,M,Z|C)
+		 * where a is the normalization factor
+		 * 
+		 * Using an independace assumpting we can make the following simplification
+		 * P(E,M,Z|C) = P(E|C)P(M|C)P(Z|C)
+		 * 
+		 * We can estimate each of these values from our gaussian distributions
+		 * 
+		 */
+		
+		/*calculate probability that the file is an example of speech*/
+		pE = speechGaussians.get("E").probability(E);
+		pM = speechGaussians.get("M").probability(M);
+		pZ = speechGaussians.get("Z").probability(Z);
+	
+		probabilitySpeech = (pE * pM * pZ * priorProbabilitySpeech)  ; //compute normalised probabilty that the 
+	
+		/*calculate probability of silence*/
+		pE = silenceGaussians.get("E").probability(E);
+		pM = silenceGaussians.get("M").probability(M);
+		pZ = silenceGaussians.get("Z").probability(Z);
+		
+		probabilitySilence = (pE * pM * pZ * priorProbabilitySpeech);
+		
+		
+		if(probabilitySpeech > probabilitySilence){
+			return "Speech";
+		}
+		return "Silence";
+		
+		
+	}
+
+}

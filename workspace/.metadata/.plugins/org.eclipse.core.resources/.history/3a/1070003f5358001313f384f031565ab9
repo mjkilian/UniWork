@@ -1,0 +1,55 @@
+import java.util.Arrays;
+
+
+public class KFoldValidator {
+	SoundClassifier classifier;
+	private double[] Espeech;
+	private double[] Mspeech;
+	private double[] Zspeech;
+	
+	private double[] Esilence;
+	private double[] Msilence;
+	private double[] Zsilence;
+	
+	private int noSpeech;
+	private int noSilence;
+	private int noSamples;
+	final double priorProbabilitySpeech = 0.5;
+	
+	
+	public KFoldValidator( double[] e, double[] m,
+			double[] z, int noSpeech, int noSilence) {
+		super();
+		Espeech = Arrays.copyOfRange(e, 0, noSpeech);
+		Esilence = Arrays.copyOfRange(e, noSpeech, e.length-1);
+		Mspeech = Arrays.copyOfRange(m, 0, noSpeech);
+		Msilence = Arrays.copyOfRange(m, noSpeech, m.length-1);
+		Zspeech = Arrays.copyOfRange(z, 0, noSpeech);
+		Zsilence = Arrays.copyOfRange(z,noSpeech,z.length-1);
+		
+		this.noSpeech = noSpeech;
+		this.noSilence = noSilence;
+		this.noSamples = noSpeech + noSilence;
+	}
+	
+	public double getTraining(int noFolds, int foldNo, int startTestFold, int endTestFold, int sizeOfFold){
+		
+	}
+	
+	
+	public double KFoldTest(int noFolds, int foldNo){
+		int sizeOfFold = (Espeech.length/noFolds); //how many samples does a fold contain 
+		int startTestFold = sizeOfFold * foldNo;
+		int endTestFold = startTestFold + sizeOfFold;
+		
+		double[] trainingE = getTraining(E,noFolds,foldNo,startTestFold,endTestFold,sizeOfFold);
+		double[] trainingM = getTraining(M,noFolds,foldNo,startTestFold,endTestFold,sizeOfFold);
+		double[] trainingZ = getTraining(Z,noFolds,foldNo,startTestFold,endTestFold,sizeOfFold);
+		
+		double[] testE = Arrays.copyOfRange(E, startTestFold,endTestFold);
+		
+		
+	}
+	
+	
+}

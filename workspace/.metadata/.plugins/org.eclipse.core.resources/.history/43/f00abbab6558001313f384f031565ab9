@@ -1,0 +1,63 @@
+import java.util.HashMap;
+import java.util.Map;
+
+
+public class SoundClassifier {
+	private Map<String,LinearGaussian> speechGaussians;
+	private double priorProbabilitySpeech = 0.5;
+	
+	public SoundClassifier(double priorProbabilitySpeech, double[] speechE, double[] speechM, double[] speechZ){
+		this.priorProbabilitySpeech = priorProbabilitySpeech;
+		speechGaussians = new HashMap<String,LinearGaussian>();
+		//silenceGaussians = new HashMap<String,LinearGaussian>();
+		
+		speechGaussians.put("E", new LinearGaussian(speechE));
+		speechGaussians.put("M", new LinearGaussian(speechM));
+		speechGaussians.put("Z", new LinearGaussian(speechZ));
+
+		System.out.println("E MEAN: " + speechGaussians.get("E").getMean());
+		System.out.println("E VARIANCE: " + speechGaussians.get("E").getVariance());
+		System.out.println("M MEAN: " + speechGaussians.get("M").getMean());
+		System.out.println("M VARIANCE: " + speechGaussians.get("M").getVariance());
+		System.out.println("Z MEAN: " + speechGaussians.get("Z").getMean());
+		System.out.println("Z VARIANCE: " + speechGaussians.get("Z").getVariance());
+		
+	}
+	
+	public String classify( double E, double M, double Z){
+		double probabilitySpeech;
+		double pE;
+		double pM;
+		double pZ;
+		
+		/*Using a Naive Bayes method we can work out the probability that a file belongs to a class C (either speech or silence)
+		 * using the following:
+		 * P(C|E,M,Z) = aP(C)P(E,M,Z|C)
+		 * where a is the normalization factor
+		 * 
+		 * Using an independace assumpting we can make the following simplification
+		 * P(E,M,Z|C) = P(E|C)P(M|C)P(Z|C)
+		 * 
+		 * We can estimate each of these values from our gaussian distributions
+		 * 
+		 */
+		
+		/*calculate probability that the file is an example of speech*/
+		pE = priorProbabilitySpeech * speechGaussians.get("E").probability(E);
+		pM = priorProbabilitySpeech * speechGaussians.get("M").probability(M);
+		pZ = priorProbabilitySpeech * speechGaussians.get("Z").probability(Z);
+		System.out.println("p(E): " + pE);
+		System.out.println("p(M): " + pM);
+		System.out.println("p(Z): " + pZ);
+	
+		probabilitySpeech = (pE * pM * pZ)  ; //compute normalised probabilty that the 
+		System.out.println("Prob: " + probabilitySpeech);
+		if(probabilitySpeech > priorProbabilitySpeech){
+			return "Speech";
+		}
+		return "Silence";
+		
+		
+	}
+
+}

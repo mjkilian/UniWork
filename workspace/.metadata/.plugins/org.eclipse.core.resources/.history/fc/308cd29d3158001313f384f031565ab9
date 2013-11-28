@@ -1,0 +1,10 @@
+import java.util.Map;
+
+
+public class SoundClassifier {
+	private Map<String,LinearGaussian> speechGaussians;
+	private Map<String,LinearGaussian> silenceGaussians;
+	
+	public SoundClassifier(double speechE, double speech)
+
+}

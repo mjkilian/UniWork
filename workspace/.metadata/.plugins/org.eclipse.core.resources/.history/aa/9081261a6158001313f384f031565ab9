@@ -1,0 +1,52 @@
+import java.util.HashMap;
+import java.util.Map;
+
+
+public class SoundClassifier {
+	private Map<String,LinearGaussian> speechGaussians;
+	private double priorProbabilitySpeech = 0.5;
+	
+	public SoundClassifier(double priorProbabilitySpeech, double[] speechE, double[] speechM, double[] speechZ){
+		this.priorProbabilitySpeech = priorProbabilitySpeech;
+		speechGaussians = new HashMap<String,LinearGaussian>();
+		//silenceGaussians = new HashMap<String,LinearGaussian>();
+		
+		speechGaussians.put("E", new LinearGaussian(speechE));
+		speechGaussians.put("M", new LinearGaussian(speechM));
+		speechGaussians.put("Z", new LinearGaussian(speechZ));
+
+	}
+	
+	public String classify( double E, double M, double Z){
+		double probabilitySpeech;
+		double pE;
+		double pM;
+		double pZ;
+		
+		/*Using a Naive Bayes method we can work out the probability that a file belongs to a class C (either speech or silence)
+		 * using the following:
+		 * P(C|E,M,Z) = aP(C)P(E,M,Z|C)
+		 * where a is the normalization factor
+		 * 
+		 * Using an independace assumpting we can make the following simplification
+		 * P(E,M,Z|C) = P(E|C)P(M|C)P(Z|C)
+		 * 
+		 * We can estimate each of these values from our gaussian distributions
+		 * 
+		 */
+		
+		/*calculate probability that the file is an example of speech*/
+		pE = priorProbabilitySpeech * speechGaussians.get("E").probability(E);
+		pM = priorProbabilitySpeech * speechGaussians.get("M").probability(M);
+		pZ = priorProbabilitySpeech * speechGaussians.get("Z").probability(Z);
+		probabilitySpeech = pE * pM * pZ / (pE + pM + pZ); //compute normalised probabilty that the 
+		
+		if(probabilitySpeech > priorProbabilitySpeech){
+			return "Speech";
+		}
+		return "Silence";
+		
+		
+	}
+
+}
